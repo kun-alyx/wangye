@@ -1,0 +1,38 @@
+name: Clone Repository A Without Data Folder
+
+on:
+  workflow_dispatch:  # 允许手动触发工作流
+  push:
+    branches:
+      - main
+
+jobs:
+  clone-without-data:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository wangye
+      uses: actions/checkout@v2  # 克隆仓库 B
+      with:
+        ref: main
+
+    - name: Set up sparse-checkout
+      run: |
+        git clone --filter=blob:none --no-checkout https://github.com/kun-alyx/repository-kemono.git repo-kemono  # 克隆仓库 A 但不签出任何文件
+        cd repo-kemono
+        git sparse-checkout init --cone  # 初始化 sparse-checkout
+        git sparse-checkout set /*  # 选择需要的目录（排除 data）
+        git checkout main  # 切换到仓库 A 的主分支
+        git rm -r --cached data  # 删除 `data` 文件夹，但不影响仓库内容
+    - name: Copy files from A to B
+      run: |
+        cp -r repo-kemono/* .  # 将仓库 A 的文件（不包括 data 文件夹）复制到仓库 B
+
+    - name: Commit and Push Changes to B
+      run: |
+
+        git add .  # 暂存更改
+        git commit -m "Cloned repository A without the data folder"  # 提交更改
+        git push origin main  # 推送到仓库 B 的 main 分支
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # 使用 GitHub Token 进行认证
