@@ -24,6 +24,8 @@ jobs:
         git sparse-checkout set /*  # 选择需要的目录（排除 data）
         git checkout main  # 切换到仓库 A 的主分支
         git rm -r --cached data  # 删除 `data` 文件夹，但不影响仓库内容
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # 使用 GitHub Token 进行认证
     - name: Copy files from A to B
       run: |
         cp -r repo-kemono/* .  # 将仓库 A 的文件（不包括 data 文件夹）复制到仓库 B
