@@ -21,7 +21,7 @@ jobs:
         git config user.name "kun-alyx"
         git config user.email "1754376627@qq.com"
         git add .  # 暂存更改
-        git clone --filter=blob:none --no-checkout https://github.com/kun-alyx/repository-kemono.git repo-kemono  # 克隆仓库 A 但不签出任何文件
+        git clone --filter=blob:none --no-checkout https://github.com/kun-alyx/kemono.git repo-kemono  # 克隆仓库 A 但不签出任何文件
         cd repo-kemono
         git sparse-checkout init --cone  # 初始化 sparse-checkout
         git sparse-checkout set /*  # 选择需要的目录（排除 data）
