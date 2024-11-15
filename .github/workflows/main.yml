@@ -29,7 +29,8 @@ jobs:
     - name: Copy files from A to B
       run: |
         cp -r repo-kemono/* .  # 将仓库 A 的文件（不包括 data 文件夹）复制到仓库 B
-
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # 使用 GitHub Token 进行认证
     - name: Commit and Push Changes to B
       run: |
 
